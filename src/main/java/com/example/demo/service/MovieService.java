@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@CacheConfig(cacheNames = {"lastResult"})
 public class MovieService {
 
     private MovieRepository movieRepository;
@@ -18,7 +17,6 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    @Cacheable
     public List<Movie> search(String name) {
         doSomething(name);
         return movieRepository.findByGenresContaining(name);
