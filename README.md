@@ -93,9 +93,9 @@ Default user: admin, default password: admin
 
 Choose data source:
 
-![](img/03.png)
+> ⚠️ A typo in url, `promethesu` --> `prometheus`
 
-> ⚠️ A typo in url, `promethues` --> `promethesu`
+![](img/03.png)
 
 ![](img/02.png)
 
