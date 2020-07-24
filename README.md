@@ -99,6 +99,10 @@ Choose data source:
 
 ![](img/02.png)
 
+## How to Play the Demo
+
+The application has two versions, one in the `old` branch, one wth cache is in the `master` branch.
+
 ### Docker
 
 Package your project, for example:
@@ -107,7 +111,7 @@ Package your project, for example:
 ./mvnw clean package -Dmaven.test.skip=true
 ```
 
-Write your `Dockerfile`:
+Check your `Dockerfile`:
 
 ```dockerfile
 FROM openjdk:13-jdk-alpine
@@ -118,7 +122,7 @@ COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
 ```
 
-Build, for example:
+Build the image, for example:
 
 ```
 docker build . -t sjtuse-128/demo:v2
@@ -133,7 +137,9 @@ sjtuse-128/demo		v2		ea7cb67e0d33		19 minutes ago		380MB
 
 ### Docker-compose
 
-`docker-compose.yaml`
+Check your `docker-compose.yaml`:
+
+> If you are in the `old` branch, the version of `suture-128/demo` is `v1`.
 
 ```yaml
 version: '3.2'
@@ -187,3 +193,29 @@ networks:
     driver: bridge
 ```
 
+Start it by `docker-compose up -d`.
+
+You may see the backend server `exited`, this happens because of the database connection failure. Just restart it.
+
+```
+docker restart ${YOUR_BACKEND_CONTAINER_ID}
+```
+
+> `docker ps -a` will list all containers whatever the status are.
+
+If you want to load the data, go into the database container:
+
+```
+docker exec -it performance-test_database_1 bash
+```
+
+Login the database by `mysql -u root -p` and then load the data:
+
+```
+load data infile '/var/lib/mysql-files/movies.csv'
+into table movie
+fields terminated by ',' optionally enclosed by '"' escaped by '"'
+lines terminated by '\r\n';
+```
+
+The whole demo is not out of the box because I didn't package it well. Please bear with me.
